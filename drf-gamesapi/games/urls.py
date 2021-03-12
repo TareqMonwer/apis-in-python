@@ -43,6 +43,14 @@ urlpatterns = [
         views.PlayerScoreDetail.as_view(),
         name=views.PlayerScoreDetail.name
     ),
+    path('users/',
+        views.UserList.as_view(),
+        name=views.UserList.name
+    ),
+    path('users/<int:pk>/',
+        views.UserDetail.as_view(),
+        name=views.UserDetail.name
+    ),
     path(
         '', views.APIRoot.as_view(),
         name=views.APIRoot.name

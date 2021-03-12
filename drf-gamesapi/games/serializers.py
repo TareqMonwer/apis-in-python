@@ -16,6 +16,7 @@ class UserSerializer(serializers.HyperlinkedModelSerializer):
     games = UserGamesSerializer(many=True, read_only=True)
 
     class Meta:
+        model = User
         fields = ('url', 'pk', 'username', 'games')
 
 class GameCategorySerializer(serializers.HyperlinkedModelSerializer):

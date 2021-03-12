@@ -1,14 +1,26 @@
 from rest_framework import generics, permissions
 from rest_framework.response import Response
 from rest_framework.reverse import reverse
+from django.contrib.auth.models import User
 from games.permissions import IsOwnerOrReadOnly
 
 from games.models import (GameCategory, Game,
     Player, PlayerScore)
 from games.serializers import (GameCategorySerializer,
     GameSerializer, PlayerSerializer,
-    PlayerScoreSerializer)
+    PlayerScoreSerializer, UserSerializer)
 
+
+class UserList(generics.ListAPIView):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
+    name = 'user-list'
+
+
+class UserDetail(generics.RetrieveAPIView):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
+    name = 'user-detail'
 
 class GameCategoryList(generics.ListCreateAPIView):
     queryset = GameCategory.objects.all()
@@ -32,6 +44,8 @@ class GameList(generics.ListCreateAPIView):
     )
 
     def perform_create(self, serializer):
+        # Pass an additional owner field to the create method
+        # To Set the owner to the user received in the request
         serializer.save(owner=self.request.user)
 
 
@@ -78,6 +92,7 @@ class APIRoot(generics.GenericAPIView):
                 'game-categories': reverse(
                     GameCategoryList.name, request=request),
                 'games': reverse(GameList.name, request=request),
-                'scores': reverse(PlayerScoreList.name, request=request)
+                'scores': reverse(PlayerScoreList.name, request=request),
+                'users': reverse(UserList.name, request=request),
             }
         )

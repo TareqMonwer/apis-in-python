@@ -42,6 +42,8 @@ INSTALLED_APPS = [
     'games.apps.GamesConfig',
     # 3rd
     'rest_framework',
+    'django_filters',
+    'crispy_forms',
 ]
 
 MIDDLEWARE = [
@@ -132,6 +134,11 @@ REST_FRAMEWORK = {
     'DEFAULT_PAGINATION_CLASS':
         'games.pagination.LimitOffsetPaginationWithMaxLimit',
     'PAGE_SIZE': 5,
+    'DEFAULT_FILTER_BACKENDS': (
+        'django_filters.rest_framework.DjangoFilterBackend',
+        'rest_framework.filters.SearchFilter',
+        'rest_framework.filters.OrderingFilter',
+    ),
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework.authentication.BasicAuthentication',
         'rest_framework.authentication.SessionAuthentication',
@@ -141,8 +148,8 @@ REST_FRAMEWORK = {
         'rest_framework.throttling.UserRateThrottle',
     ),
     'DEFAULT_THROTTLE_RATES': {
-        'anon': '5/hour',
-        'user': '20/hour',
-        'game-categories': '10/hour'
+        'anon': '50/hour',
+        'user': '200/hour',
+        'game-categories': '100/hour'
     }
 }
